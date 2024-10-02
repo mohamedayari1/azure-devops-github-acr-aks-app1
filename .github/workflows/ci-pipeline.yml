@@ -22,5 +22,6 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t acrforlawakscluster.azurecr.io/app1nginx:${{ github.sha }} .
-          docker push acrforlawakscluster.azurecr.io/app1nginx:${{ github.sha }}
+          
+          docker build -t acrforlawakscluster.azurecr.io/app1/app1nginx:${{ github.sha }} .
+          docker push acrforlawakscluster.azurecr.io/app1/app1nginx:${{ github.sha }}
