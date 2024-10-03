@@ -48,7 +48,7 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          
+          sed -i 's|IMAGE_PLACEHOLDER|acrforlawakscluster.azurecr.io/app1nginxaks:${{ github.run_id }}|' manifests/deployment.yml
           kubectl apply -f manifests
 
       - name: Verify Deployment
