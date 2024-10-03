@@ -14,9 +14,11 @@ spec:
       labels:
         app: app1-nginx
     spec:
+      imagePullSecrets:
+        - name: acr-auth  # Ensure this matches the secret name
       containers:
         - name: app1-nginx
-          image: aksdevopsacr.azurecr.io/custom2aksnginxapp1
+          image: acrforlawakscluster.azurecr.io/app1nginxaks:${{ github.run_id }}  # Set directly in CI/CD
           ports:
             - containerPort: 80
 ---
@@ -33,6 +35,3 @@ spec:
   ports:
     - port: 80
       targetPort: 80
-
-
-
