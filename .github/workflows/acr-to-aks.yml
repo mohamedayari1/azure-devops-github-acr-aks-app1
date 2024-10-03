@@ -26,30 +26,35 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build 
+    needs: build
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Set the target AKS cluster
         uses: azure/aks-set-context@v1
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
-          cluster-name: ${{ secrets.AKS_NAME }}  
-          resource-group: ${{ secrets.RESOURCE_GROUP }}  
+          cluster-name: ${{ secrets.AKS_NAME }}
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
 
       - name: Create Image Pull Secret
         uses: azure/k8s-create-secret@v1
         with:
-          container-registry-url: ${{ secrets.ACR_URL }}  
+          container-registry-url: ${{ secrets.ACR_URL }}
           container-registry-username: ${{ secrets.ACR_USERNAME }}
           container-registry-password: ${{ secrets.ACR_PASSWORD }}
-          secret-name: acr-auth  
+          secret-name: acr-auth
 
       - name: Deploy to Kubernetes
-        uses: azure/k8s-deploy@v4
-        with:
-          manifests: |
-            manifests/deployment.yml
-            manifests/service.yml
-          images: |
-            acrforlawakscluster.azurecr.io/app1nginxaks:${{ github.run_id }}  
-          imagepullsecrets: |
-            acr-auth  
+        run: |
+          # Navigate to the directory where the manifests folder is located
+          cd ${{ github.workspace }}
+
+          # Apply all manifests in the manifests folder
+          kubectl apply -f manifests
+
+      - name: Verify Deployment
+        run: |
+          kubectl get pods
+          kubectl get services
