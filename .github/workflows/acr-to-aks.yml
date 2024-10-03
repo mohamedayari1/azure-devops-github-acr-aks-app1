@@ -47,9 +47,11 @@ jobs:
         uses: azure/k8s-deploy@v1
         with:
           manifests: |
-            kube-manifests/deployment.yaml  
-            kube-manifests/service.yaml
+            manifests/deployment.yaml
+            manifests/service.yaml
           images: |
             acrforlawakscluster.azurecr.io/app1nginxaks:${{ github.run_id }}  
           imagepullsecrets: |
             acr-auth  
+
+
