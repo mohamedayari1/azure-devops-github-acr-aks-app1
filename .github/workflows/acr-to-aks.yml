@@ -48,10 +48,7 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          # Navigate to the directory where the manifests folder is located
-          cd ${{ github.workspace }}
-
-          # Apply all manifests in the manifests folder
+          
           kubectl apply -f manifests
 
       - name: Verify Deployment
