@@ -21,8 +21,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t ${{ secrets.ACR_URL }}/streamlitxaks:${{ github.run_id }} .
-          docker push ${{ secrets.ACR_URL }}/streamlitxaks:${{ github.run_id }}
+          docker build -t ${{ secrets.ACR_URL }}/streamlitaks:${{ github.run_id }} .
+          docker push ${{ secrets.ACR_URL }}/streamlitaks:${{ github.run_id }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -48,7 +48,7 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          sed -i 's|IMAGE_PLACEHOLDER|${{ secrets.ACR_URL }}/streamlitxaks:${{ github.run_id }}|' manifests/deployment.yml
+          sed -i 's|IMAGE_PLACEHOLDER|${{ secrets.ACR_URL }}/streamlitaks:${{ github.run_id }}|' manifests/deployment.yml
           kubectl apply -f manifests
 
       - name: Verify Deployment
