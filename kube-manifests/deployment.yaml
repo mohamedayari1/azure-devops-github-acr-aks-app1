@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1-nginx-deployment
+  labels:
+    app: app1-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app1-nginx
+  template:
+    metadata:
+      labels:
+        app: app1-nginx
+    spec:
+      imagePullSecrets:
+        - name: acr-auth  # Ensure this matches the secret name
+      containers:
+        - name: app1-nginx
+          image: acrforlawakscluster.azurecr.io/app1nginxaks:${{ github.run_id }}  # Set directly in CI/CD
+          ports:
+            - containerPort: 80
